@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>토익 문법 퀴즈</title>
+    <title>토익 문법 퀴즈 V2</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -136,19 +136,17 @@
 </head>
 <body>
 
-    <!-- 1. 시작 화면 -->
     <div class="container" id="start-screen">
-        <h1>토익 문법 퀴즈</h1>
-        <p style="margin-bottom: 30px; color: #666;">학습 방식을 선택해주세요.</p>
+        <h1>토익 문법 퀴즈 V2</h1>
+        <p style="margin-bottom: 30px; color: #666;">업데이트된 35개의 문제를 풀어보세요!</p>
         <div class="mode-btn-container">
             <button class="btn-primary" onclick="startQuiz('sequential')">순서대로 풀기</button>
             <button class="btn-primary" onclick="startQuiz('random')">랜덤 풀기</button>
         </div>
     </div>
 
-    <!-- 2. 퀴즈 화면 -->
     <div class="container hidden" id="quiz-screen">
-        <div class="progress-text" id="progress-display">1 / 6</div>
+        <div class="progress-text" id="progress-display">1 / 35</div>
         
         <div class="quiz-card">
             <div class="word-text" id="display-word">Word</div>
@@ -167,14 +165,43 @@
     </div>
 
     <script>
-        // 안전하게 배열 형태로 데이터 구성
+        // 버전 2의 업데이트된 전체 35개 데이터
         const rawDataList = [
             "Since > 그 후로 > 전접부/현재완료 필요/have since p.p",
             "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever",
             "No longer > 더 이상 ~않다 > 긍정문에 쓰고/의미는 부정/조be뒤 일앞에 위치",
             "Yet > 아직까지 > 긍정문에서 오답/단, 예외/have yet to, be yet to/부정문, 의문문, 조건문에서/문장 맨 뒤에 위치/부정문에선 not 바로 뒤/not yet",
             "Also > 또한 > 위치와 무관",
-            "As well > 또한 > 문장 맨 뒤에 위치"
+            "As well > 또한 > 문장 맨 뒤에 위치",
+            "Ago > 전에, 미리 > 숫자기간 꼭 있어야해/꼭 과거여야해",
+            "In advance > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
+            "Ahead > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
+            "Still > 여전히 > 긍정문에선 완료시제에선 오답/조be뒤일앞에 위치",
+            "Promptly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Soon > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Shortly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Immediately > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Currently > 현재 > 현재진행시제에서 1순위 답",
+            "Presently > 현재 > 현재진행시제에서 1순위 답",
+            "Recently > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
+            "Lately > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
+            "Always > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Usually > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Generally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Normally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Commonly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Typically > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Ordinarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Customarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Often > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Frequently > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Sometimes > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Occasionally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Hardly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Rarely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Seldom > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Scarcely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Never > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치"
         ];
 
         // 데이터 파싱
@@ -232,7 +259,7 @@
         // 문제 화면 그리기
         function renderQuestion() {
             if (currentIndex >= questionOrder.length) {
-                alert("준비된 모든 문제를 풀었습니다! 수고하셨습니다.");
+                alert("준비된 모든 35문제를 풀었습니다! 수고하셨습니다.");
                 goToHome();
                 return;
             }
@@ -245,7 +272,7 @@
             displayMeaning.textContent = currentData.meaning;
             displaySentence.textContent = currentData.sentence;
 
-            // 진행률 표시 (문법 오류 안나게 일반 덧셈으로 수정)
+            // 진행률 표시
             progressDisplay.textContent = (currentIndex + 1) + " / " + questionOrder.length;
 
             // UI 가시성 초기화 (영어만 보임)
@@ -259,10 +286,10 @@
             if (step === 0) {
                 // 뜻 공개
                 displayMeaning.classList.remove('hidden');
-                mainActionBtn.textContent = "정답 확인 (문장)";
+                mainActionBtn.textContent = "정답 확인 (문법포인트)";
                 step = 1;
             } else if (step === 1) {
-                // 문장 공개
+                // 문장/문법포인트 공개
                 displaySentence.classList.remove('hidden');
                 mainActionBtn.textContent = "다음 문제";
                 step = 2;
@@ -273,7 +300,7 @@
             }
         }
 
-        // 방금 문장 다시풀기
+        // 방금 문제 다시풀기
         function resetCurrentQuestion() {
             step = 0;
             displayMeaning.classList.add('hidden');
