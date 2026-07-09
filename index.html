@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>토익 문법 퀴즈 V2</title>
+    <title>토익 문법 퀴즈 V3</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -137,8 +137,8 @@
 <body>
 
     <div class="container" id="start-screen">
-        <h1>토익 문법 퀴즈 V2</h1>
-        <p style="margin-bottom: 30px; color: #666;">업데이트된 35개의 문제를 풀어보세요!</p>
+        <h1>토익 문법 퀴즈 V3</h1>
+        <p style="margin-bottom: 30px; color: #666;">총 65개의 토익 문법 문제를 풀어보세요!</p>
         <div class="mode-btn-container">
             <button class="btn-primary" onclick="startQuiz('sequential')">순서대로 풀기</button>
             <button class="btn-primary" onclick="startQuiz('random')">랜덤 풀기</button>
@@ -146,7 +146,7 @@
     </div>
 
     <div class="container hidden" id="quiz-screen">
-        <div class="progress-text" id="progress-display">1 / 35</div>
+        <div class="progress-text" id="progress-display">1 / 65</div>
         
         <div class="quiz-card">
             <div class="word-text" id="display-word">Word</div>
@@ -158,59 +158,89 @@
             <button class="btn-primary" id="main-action-btn" onclick="handleMainAction()">정답 확인 (뜻)</button>
             
             <div class="sub-controls">
-                <button class="btn-secondary" onclick="resetCurrentQuestion()">방금 문장 다시풀기</button>
+                <button class="btn-secondary" onclick="resetCurrentQuestion()">방금 문제 다시풀기</button>
                 <button class="btn-secondary" onclick="goToHome()">처음으로</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 버전 2의 업데이트된 전체 35개 데이터
+        // 새롭게 업데이트된 65개 문제 데이터
         const rawDataList = [
-            "Since > 그 후로 > 전접부/현재완료 필요/have since p.p",
-            "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever",
-            "No longer > 더 이상 ~않다 > 긍정문에 쓰고/의미는 부정/조be뒤 일앞에 위치",
-            "Yet > 아직까지 > 긍정문에서 오답/단, 예외/have yet to, be yet to/부정문, 의문문, 조건문에서/문장 맨 뒤에 위치/부정문에선 not 바로 뒤/not yet",
-            "Also > 또한 > 위치와 무관",
-            "As well > 또한 > 문장 맨 뒤에 위치",
-            "Ago > 전에, 미리 > 숫자기간 꼭 있어야해/꼭 과거여야해",
-            "In advance > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
-            "Ahead > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
-            "Still > 여전히 > 긍정문에선 완료시제에선 오답/조be뒤일앞에 위치",
-            "Promptly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
-            "Soon > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
-            "Shortly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
-            "Immediately > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
-            "Currently > 현재 > 현재진행시제에서 1순위 답",
-            "Presently > 현재 > 현재진행시제에서 1순위 답",
-            "Recently > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
-            "Lately > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
-            "Always > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Usually > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Generally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Normally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Commonly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Typically > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Ordinarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Customarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Often > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Frequently > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Sometimes > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Occasionally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Hardly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Rarely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Seldom > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Scarcely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
-            "Never > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치"
+            "Since > 그 후로 > 전접부/현재완료 필요/have since p.p", // [cite: 2]
+            "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever", // [cite: 3]
+            "No longer > 더 이상 ~않다 > 긍정문에 쓰고/의미는 부정/조be뒤 일앞에 위치", // [cite: 4]
+            "Yet > 아직까지 > 긍정문에서 오답/단, 예외/have yet to, be yet to/부정문, 의문문, 조건문에서/문장 맨 뒤에 위치/부정문에선 not 바로 뒤/not yet", // [cite: 5]
+            "Also > 또한 > 위치와 무관", // [cite: 6]
+            "As well > 또한 > 문장 맨 뒤에 위치", // [cite: 7]
+            "Ago > 전에, 미리 > 숫자기간 꼭 있어야해/꼭 과거여야해", // [cite: 8]
+            "In advance > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관", // [cite: 9]
+            "Ahead > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관", // [cite: 10]
+            "Still > 여전히 > 긍정문에선 완료시제에선 오답/조be뒤일앞에 위치", // [cite: 11]
+            "Promptly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 12]
+            "Soon > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 13]
+            "Shortly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 14]
+            "Immediately > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 15]
+            "Currently > 현재 > 현재진행시제에서 1순위 답", // [cite: 16]
+            "Presently > 현재 > 현재진행시제에서 1순위 답", // [cite: 17]
+            "Recently > 최근에 > 주로 단순과거, 현재완료에서 좋은답", // [cite: 18]
+            "Lately > 최근에 > 주로 단순과거, 현재완료에서 좋은답", // [cite: 19]
+            "Always > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 20]
+            "Usually > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 21]
+            "Generally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 22]
+            "Normally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 23]
+            "Commonly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 24]
+            "Typically > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 25]
+            "Ordinarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 26]
+            "Customarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 27]
+            "Often > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 28]
+            "Frequently > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 29]
+            "Sometimes > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 30]
+            "Occasionally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 31]
+            "Hardly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 32]
+            "Rarely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 33]
+            "Seldom > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 34]
+            "Scarcely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 35]
+            "Never > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 36]
+            "So > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 37]
+            "Very > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 38]
+            "Too > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 39]
+            "Quite > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 40]
+            "Pretty > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 41]
+            "Extremely > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 42]
+            "Hard > 열심히 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 43]
+            "Late > 늦게 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 44]
+            "Early > 일찍 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 45]
+            "Much > 많이 > 형용사/부사수식 불가 동사를 뒤에서 수식 단, 비교급/최상급강조", // [cite: 46]
+            "Well > 잘, 훨 > 형용사/부사수식 불가 동사를 뒤에서 수식 단p.p.강조, above below강조", // [cite: 47]
+            "High > 높게 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 48]
+            "Such > 매우 > 명사구 강조 단, that과함께 쓸수있음", // [cite: 49]
+            "Over > 초과하여 > 숫자강조부사", // [cite: 50]
+            "Less than > 미만으로 > 숫자강조부사", // [cite: 51]
+            "More than > 초과하여 > 숫자강조부사", // [cite: 52]
+            "Up to 전/부 > 최대 > 숫자강조부사", // [cite: 53]
+            "At least > 최소 > 숫자강조부사", // [cite: 54]
+            "Only > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 55]
+            "Exclusively > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 56]
+            "Solely > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 57]
+            "Just > 단지 > 95퍼 이상의 정답률", // [cite: 58]
+            "Merely > 단지 > 95퍼 이상의 정답률", // [cite: 59]
+            "Simply > 단순히 > 95퍼 이상의 정답률", // [cite: 60]
+            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 61]
+            "Especially > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 62]
+            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 63]
+            "Specifically > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 64]
+            "Mainly > 주로 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 65]
+            "Primarily >주로> 70퍼 정답률 따라서먼저대입해석확인할 것" // [cite: 66]
         ];
 
         // 데이터 파싱
         const quizData = rawDataList.map(function(line) {
             const parts = line.split('>');
             return {
-                word: parts[0].trim(),
-                meaning: parts[1].trim(),
-                sentence: parts[2].trim()
+                word: parts[0] ? parts[0].trim() : "",
+                meaning: parts[1] ? parts[1].trim() : "",
+                sentence: parts[2] ? parts[2].trim() : ""
             };
         });
 
@@ -218,7 +248,7 @@
         let currentMode = 'sequential';
         let questionOrder = [];
         let currentIndex = 0;
-        let step = 0; // 0: 영단어만, 1: 뜻 공개, 2: 문장 공개 (모두 공개됨)
+        let step = 0; 
 
         // DOM 요소
         const startScreen = document.getElementById('start-screen');
@@ -259,7 +289,7 @@
         // 문제 화면 그리기
         function renderQuestion() {
             if (currentIndex >= questionOrder.length) {
-                alert("준비된 모든 35문제를 풀었습니다! 수고하셨습니다.");
+                alert("준비된 모든 " + questionOrder.length + "문제를 풀었습니다! 수고하셨습니다.");
                 goToHome();
                 return;
             }
@@ -281,20 +311,17 @@
             mainActionBtn.textContent = "정답 확인 (뜻)";
         }
 
-        // 메인 버튼 동작 (뜻 -> 문장 -> 다음 문제)
+        // 메인 버튼 동작
         function handleMainAction() {
             if (step === 0) {
-                // 뜻 공개
                 displayMeaning.classList.remove('hidden');
                 mainActionBtn.textContent = "정답 확인 (문법포인트)";
                 step = 1;
             } else if (step === 1) {
-                // 문장/문법포인트 공개
                 displaySentence.classList.remove('hidden');
                 mainActionBtn.textContent = "다음 문제";
                 step = 2;
             } else if (step === 2) {
-                // 다음 문제로 넘어가기
                 currentIndex++;
                 renderQuestion();
             }
