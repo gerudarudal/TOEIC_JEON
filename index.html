@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>토익 문법 퀴즈 V3</title>
+    <title>토익 문법 퀴즈 V4</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -137,8 +137,8 @@
 <body>
 
     <div class="container" id="start-screen">
-        <h1>토익 문법 퀴즈 V3</h1>
-        <p style="margin-bottom: 30px; color: #666;">총 65개의 토익 문법 문제를 풀어보세요!</p>
+        <h1>토익 문법 퀴즈 V4</h1>
+        <p style="margin-bottom: 30px; color: #666;">총 71개의 토익 문법 문제를 풀어보세요!</p>
         <div class="mode-btn-container">
             <button class="btn-primary" onclick="startQuiz('sequential')">순서대로 풀기</button>
             <button class="btn-primary" onclick="startQuiz('random')">랜덤 풀기</button>
@@ -146,7 +146,7 @@
     </div>
 
     <div class="container hidden" id="quiz-screen">
-        <div class="progress-text" id="progress-display">1 / 65</div>
+        <div class="progress-text" id="progress-display">1 / 71</div>
         
         <div class="quiz-card">
             <div class="word-text" id="display-word">Word</div>
@@ -165,7 +165,7 @@
     </div>
 
     <script>
-        // 새롭게 업데이트된 65개 문제 데이터
+        // 새롭게 업데이트된 71개 문제 데이터
         const rawDataList = [
             "Since > 그 후로 > 전접부/현재완료 필요/have since p.p", // [cite: 2]
             "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever", // [cite: 3]
@@ -231,7 +231,13 @@
             "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 63]
             "Specifically > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 64]
             "Mainly > 주로 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 65]
-            "Primarily >주로> 70퍼 정답률 따라서먼저대입해석확인할 것" // [cite: 66]
+            "Primarily >주로> 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 66]
+            "Approximately > 거의 > 숫자강조부사, all every any half 강조", // [cite: 67]
+            "Nearly > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조", // [cite: 68]
+            "Almost > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조", // [cite: 69]
+            "Roughly > 거의 > 숫자강조부사, all every any half 강조", // [cite: 70]
+            "About > 거의 > 숫자강조부사, all every any half 강조", // [cite: 71]
+            "Around > 거의 > 숫자강조부사, all every any half 강조" // [cite: 72]
         ];
 
         // 데이터 파싱
