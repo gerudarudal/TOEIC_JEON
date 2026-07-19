@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>토익 문법 퀴즈 V4</title>
+    <title>토익 문법 퀴즈 - 오답노트 버전</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -11,6 +11,10 @@
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #333333;
+            --part1-color: #007bff;
+            --part2-color: #28a745;
+            --correct-color: #2b8a3e;
+            --incorrect-color: #c92a2a;
         }
 
         body {
@@ -39,49 +43,62 @@
 
         h1 {
             color: var(--primary-color);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* 시작 화면 버튼 스타일 */
+        /* 파트별 섹션 스타일 */
+        .part-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .part-section h2 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
         .mode-btn-container {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            gap: 10px;
         }
 
         button {
-            padding: 15px 20px;
-            font-size: 16px;
+            padding: 12px 15px;
+            font-size: 15px;
             font-weight: bold;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            width: 100%;
+            flex: 1;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
+        .btn-part1 { background-color: var(--part1-color); color: white; }
+        .btn-part1:hover { background-color: #0056b3; }
 
-        .btn-primary:hover {
-            background-color: #357abd;
-        }
+        .btn-part2 { background-color: var(--part2-color); color: white; }
+        .btn-part2:hover { background-color: #1e7e34; }
 
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: white;
-            margin-top: 10px;
-        }
+        .btn-primary { background-color: var(--primary-color); color: white; width: 100%; }
+        .btn-primary:hover { background-color: #357abd; }
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
+        .btn-secondary { background-color: var(--secondary-color); color: white; width: 100%; margin-top: 10px; }
+        .btn-secondary:hover { background-color: #5a6268; }
+
+        .btn-correct { background-color: var(--correct-color); color: white; }
+        .btn-correct:hover { background-color: #237032; }
+
+        .btn-incorrect { background-color: var(--incorrect-color); color: white; }
+        .btn-incorrect:hover { background-color: #a62323; }
 
         /* 퀴즈 화면 스타일 */
         .quiz-card {
@@ -96,57 +113,53 @@
             gap: 20px;
         }
 
-        .word-text {
-            font-size: 32px;
-            font-weight: 800;
-            color: #212529;
-        }
-
-        .meaning-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #e03131;
-        }
-
-        .sentence-text {
-            font-size: 16px;
-            color: #0b7285;
-            line-height: 1.5;
-            word-break: keep-all;
-        }
-
+        .word-text { font-size: 32px; font-weight: 800; color: #212529; }
+        .meaning-text { font-size: 22px; font-weight: 600; color: #e03131; }
+        .sentence-text { font-size: 16px; color: #0b7285; line-height: 1.5; word-break: keep-all; }
+        
         .progress-text {
             font-size: 14px;
             color: #868e96;
             margin-bottom: 20px;
             text-align: right;
+            font-weight: bold;
         }
 
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .controls { display: flex; flex-direction: column; gap: 10px; }
+        .sub-controls { display: flex; gap: 10px; width: 100%; }
 
-        .sub-controls {
-            display: flex;
-            gap: 10px;
-        }
+        /* 결과 화면 텍스트 */
+        .result-text { font-size: 20px; font-weight: bold; margin-bottom: 30px; color: #333; line-height: 1.6;}
+        .highlight { color: var(--incorrect-color); font-size: 24px;}
     </style>
 </head>
 <body>
 
+    <!-- 1. 시작 화면 -->
     <div class="container" id="start-screen">
-        <h1>토익 문법 퀴즈 V4</h1>
-        <p style="margin-bottom: 30px; color: #666;">총 71개의 토익 문법 문제를 풀어보세요!</p>
-        <div class="mode-btn-container">
-            <button class="btn-primary" onclick="startQuiz('sequential')">순서대로 풀기</button>
-            <button class="btn-primary" onclick="startQuiz('random')">랜덤 풀기</button>
+        <h1>토익 문법 퀴즈</h1>
+        <p style="margin-bottom: 25px; color: #666;">학습할 파트와 방식을 선택해주세요.</p>
+        
+        <div class="part-section">
+            <h2>1부: 부사 (92문제)</h2>
+            <div class="mode-btn-container">
+                <button class="btn-part1" onclick="startQuiz('part1', 'sequential')">순서대로</button>
+                <button class="btn-part1" onclick="startQuiz('part1', 'random')">랜덤 풀기</button>
+            </div>
+        </div>
+
+        <div class="part-section">
+            <h2>2부: 접속사/관계대명사 (8문제)</h2>
+            <div class="mode-btn-container">
+                <button class="btn-part2" onclick="startQuiz('part2', 'sequential')">순서대로</button>
+                <button class="btn-part2" onclick="startQuiz('part2', 'random')">랜덤 풀기</button>
+            </div>
         </div>
     </div>
 
+    <!-- 2. 퀴즈 화면 -->
     <div class="container hidden" id="quiz-screen">
-        <div class="progress-text" id="progress-display">1 / 71</div>
+        <div class="progress-text" id="progress-display">1 / 100</div>
         
         <div class="quiz-card">
             <div class="word-text" id="display-word">Word</div>
@@ -155,8 +168,15 @@
         </div>
 
         <div class="controls">
-            <button class="btn-primary" id="main-action-btn" onclick="handleMainAction()">정답 확인 (뜻)</button>
+            <!-- 기본 메인 버튼 -->
+            <button class="btn-primary" id="main-action-btn" onclick="handleMainAction()">정답 확인 (뜻/내용)</button>
             
+            <!-- 마지막 단계에서 나타나는 O/X 버튼 -->
+            <div class="sub-controls hidden" id="ox-controls">
+                <button class="btn-correct" onclick="submitAnswer(true)">완벽히 앎 (O)</button>
+                <button class="btn-incorrect" onclick="submitAnswer(false)">다시 풀기 (X)</button>
+            </div>
+
             <div class="sub-controls">
                 <button class="btn-secondary" onclick="resetCurrentQuestion()">방금 문제 다시풀기</button>
                 <button class="btn-secondary" onclick="goToHome()">처음으로</button>
@@ -164,129 +184,207 @@
         </div>
     </div>
 
+    <!-- 3. 결과 및 오답노트 화면 -->
+    <div class="container hidden" id="result-screen">
+        <h1>학습 완료!</h1>
+        <div class="result-text" id="result-message">
+            총 <span id="total-count">0</span>문제 중<br>
+            <span class="highlight" id="incorrect-count">0</span>문제를 틀렸습니다.
+        </div>
+        
+        <div class="controls" id="result-controls">
+            <button class="btn-incorrect hidden" id="btn-review-incorrect" onclick="startReviewQuiz()">틀린 문제 다시 풀기</button>
+            <button class="btn-primary" onclick="goToHome()">처음 화면으로</button>
+        </div>
+    </div>
+
     <script>
-        // 새롭게 업데이트된 71개 문제 데이터
-        const rawDataList = [
-            "Since > 그 후로 > 전접부/현재완료 필요/have since p.p", // [cite: 2]
-            "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever", // [cite: 3]
-            "No longer > 더 이상 ~않다 > 긍정문에 쓰고/의미는 부정/조be뒤 일앞에 위치", // [cite: 4]
-            "Yet > 아직까지 > 긍정문에서 오답/단, 예외/have yet to, be yet to/부정문, 의문문, 조건문에서/문장 맨 뒤에 위치/부정문에선 not 바로 뒤/not yet", // [cite: 5]
-            "Also > 또한 > 위치와 무관", // [cite: 6]
-            "As well > 또한 > 문장 맨 뒤에 위치", // [cite: 7]
-            "Ago > 전에, 미리 > 숫자기간 꼭 있어야해/꼭 과거여야해", // [cite: 8]
-            "In advance > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관", // [cite: 9]
-            "Ahead > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관", // [cite: 10]
-            "Still > 여전히 > 긍정문에선 완료시제에선 오답/조be뒤일앞에 위치", // [cite: 11]
-            "Promptly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 12]
-            "Soon > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 13]
-            "Shortly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 14]
-            "Immediately > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답", // [cite: 15]
-            "Currently > 현재 > 현재진행시제에서 1순위 답", // [cite: 16]
-            "Presently > 현재 > 현재진행시제에서 1순위 답", // [cite: 17]
-            "Recently > 최근에 > 주로 단순과거, 현재완료에서 좋은답", // [cite: 18]
-            "Lately > 최근에 > 주로 단순과거, 현재완료에서 좋은답", // [cite: 19]
-            "Always > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 20]
-            "Usually > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 21]
-            "Generally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 22]
-            "Normally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 23]
-            "Commonly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 24]
-            "Typically > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 25]
-            "Ordinarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 26]
-            "Customarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 27]
-            "Often > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 28]
-            "Frequently > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 29]
-            "Sometimes > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 30]
-            "Occasionally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 31]
-            "Hardly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 32]
-            "Rarely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 33]
-            "Seldom > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 34]
-            "Scarcely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 35]
-            "Never > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치", // [cite: 36]
-            "So > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 37]
-            "Very > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 38]
-            "Too > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 39]
-            "Quite > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 40]
-            "Pretty > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 41]
-            "Extremely > 매우 > 형용사/부사수식 동사수식 불가", // [cite: 42]
-            "Hard > 열심히 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 43]
-            "Late > 늦게 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 44]
-            "Early > 일찍 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 45]
-            "Much > 많이 > 형용사/부사수식 불가 동사를 뒤에서 수식 단, 비교급/최상급강조", // [cite: 46]
-            "Well > 잘, 훨 > 형용사/부사수식 불가 동사를 뒤에서 수식 단p.p.강조, above below강조", // [cite: 47]
-            "High > 높게 > 형용사/부사수식 불가 동사를 뒤에서 수식", // [cite: 48]
-            "Such > 매우 > 명사구 강조 단, that과함께 쓸수있음", // [cite: 49]
-            "Over > 초과하여 > 숫자강조부사", // [cite: 50]
-            "Less than > 미만으로 > 숫자강조부사", // [cite: 51]
-            "More than > 초과하여 > 숫자강조부사", // [cite: 52]
-            "Up to 전/부 > 최대 > 숫자강조부사", // [cite: 53]
-            "At least > 최소 > 숫자강조부사", // [cite: 54]
-            "Only > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 55]
-            "Exclusively > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 56]
-            "Solely > 오직,유일하게 > 95퍼 이상의 정답률", // [cite: 57]
-            "Just > 단지 > 95퍼 이상의 정답률", // [cite: 58]
-            "Merely > 단지 > 95퍼 이상의 정답률", // [cite: 59]
-            "Simply > 단순히 > 95퍼 이상의 정답률", // [cite: 60]
-            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 61]
-            "Especially > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 62]
-            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 63]
-            "Specifically > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 64]
-            "Mainly > 주로 > 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 65]
-            "Primarily >주로> 70퍼 정답률 따라서먼저대입해석확인할 것", // [cite: 66]
-            "Approximately > 거의 > 숫자강조부사, all every any half 강조", // [cite: 67]
-            "Nearly > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조", // [cite: 68]
-            "Almost > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조", // [cite: 69]
-            "Roughly > 거의 > 숫자강조부사, all every any half 강조", // [cite: 70]
-            "About > 거의 > 숫자강조부사, all every any half 강조", // [cite: 71]
-            "Around > 거의 > 숫자강조부사, all every any half 강조" // [cite: 72]
+        function parseData(list) {
+            return list.map(function(line) {
+                const parts = line.split('>');
+                return {
+                    word: parts[0] ? parts[0].trim() : "",
+                    meaning: parts[1] ? parts[1].trim() : "",
+                    sentence: parts.length > 2 ? parts.slice(2).join(' > ').trim() : "" 
+                };
+            });
+        }
+
+        // 1부 데이터
+        const rawDataPart1 = [
+            "Since > 그 후로 > 전접부/현재완료 필요/have since p.p",
+            "Ever > 이때까지 > 긍정문에서 오답/단, 예외/비교급than ever, 최상급 ~ever",
+            "No longer > 더 이상 ~않다 > 긍정문에 쓰고/의미는 부정/조be뒤 일앞에 위치",
+            "Yet > 아직까지 > 긍정문에서 오답/단, 예외/have yet to, be yet to/부정문, 의문문, 조건문에서/문장 맨 뒤에 위치/부정문에선 not 바로 뒤/not yet",
+            "Also > 또한 > 위치와 무관",
+            "As well > 또한 > 문장 맨 뒤에 위치",
+            "Ago > 전에, 미리 > 숫자기간 꼭 있어야해/꼭 과거여야해",
+            "In advance > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
+            "Ahead > 전에, 미리 > 숫자기간 있어도 되고 없어도 되고/시제와 무관",
+            "Still > 여전히 > 긍정문에선 완료시제에선 오답/조be뒤일앞에 위치",
+            "Promptly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Soon > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Shortly > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Immediately > 곧 > 주로 단순미래에서 좋은 답/before, after 앞에서도 좋은답",
+            "Currently > 현재 > 현재진행시제에서 1순위 답",
+            "Presently > 현재 > 현재진행시제에서 1순위 답",
+            "Recently > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
+            "Lately > 최근에 > 주로 단순과거, 현재완료에서 좋은답",
+            "Always > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Usually > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Generally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Normally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Commonly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Typically > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Ordinarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Customarily > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Often > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Frequently > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Sometimes > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Occasionally > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Hardly > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Rarely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Seldom > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Scarcely > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "Never > 빈도부사 > 주로 단순현재, 조be뒤일앞에 위치",
+            "So > 매우 > 형용사/부사수식 동사수식 불가",
+            "Very > 매우 > 형용사/부사수식 동사수식 불가",
+            "Too > 매우 > 형용사/부사수식 동사수식 불가",
+            "Quite > 매우 > 형용사/부사수식 동사수식 불가",
+            "Pretty > 매우 > 형용사/부사수식 동사수식 불가",
+            "Extremely > 매우 > 형용사/부사수식 동사수식 불가",
+            "Hard > 열심히 > 형용사/부사수식 불가 동사를 뒤에서 수식",
+            "Late > 늦게 > 형용사/부사수식 불가 동사를 뒤에서 수식",
+            "Early > 일찍 > 형용사/부사수식 불가 동사를 뒤에서 수식",
+            "Much > 많이 > 형용사/부사수식 불가 동사를 뒤에서 수식 단, 비교급/최상급강조",
+            "Well > 잘, 훨 > 형용사/부사수식 불가 동사를 뒤에서 수식 단p.p.강조, above below강조",
+            "High > 높게 > 형용사/부사수식 불가 동사를 뒤에서 수식",
+            "Such > 매우 > 명사구 강조 단, that과함께 쓸수있음",
+            "Over > 초과하여 > 숫자강조부사",
+            "Less than > 미만으로 > 숫자강조부사",
+            "More than > 초과하여 > 숫자강조부사",
+            "Up to 전/부 > 최대 > 숫자강조부사",
+            "At least > 최소 > 숫자강조부사",
+            "Only > 오직,유일하게 > 95퍼 이상의 정답률",
+            "Exclusively > 오직,유일하게 > 95퍼 이상의 정답률",
+            "Solely > 오직,유일하게 > 95퍼 이상의 정답률",
+            "Just > 단지 > 95퍼 이상의 정답률",
+            "Merely > 단지 > 95퍼 이상의 정답률",
+            "Simply > 단순히 > 95퍼 이상의 정답률",
+            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Especially > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Particularly > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Specifically > 특히 > 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Mainly > 주로 > 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Primarily >주로> 70퍼 정답률 따라서먼저대입해석확인할 것",
+            "Approximately > 거의 > 숫자강조부사, all every any half 강조",
+            "Nearly > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조",
+            "Almost > 거의 > 숫자강조부사, all every any half 강조, 완성의미도 강조",
+            "Roughly > 거의 > 숫자강조부사, all every any half 강조",
+            "About > 거의 > 숫자강조부사, all every any half 강조",
+            "Around > 거의 > 숫자강조부사, all every any half 강조",
+            "Finally > 마침내 > 순서가 있어도 되고 없어도 되고 주로과거시제",
+            "Lately > 마침내 > 순서가 꼭 있어야해",
+            "Once > 한때, 한번 > 접속사 부사. 부사 일때는 한때 한번 한때 일때는 주로과거 시제 문두 문중, 한번 일때는 문미",
+            "Enough > 충분히 > 형용사, 부사, 동사 뒤에서 수식",
+            "Even > 심지어 ~조차도 > 접속사 강조, 비교급최상급 강조",
+            "Evenly > 균등하게 > divide, distribute 수식",
+            "Rather > 다소, 차라리 > 다소 일때는 형용사 부사 수식. 차라리 일때는 주로 than고 함께",
+            "Highly > 매우 > 형용사, 부사수식.p.p.강조",
+            "Fairly > 상당히, 공정히 > 상당히일때는 주로 형용사 부사수식. 공정하게 일때는 주로동사수식",
+            "Thoroughly > 꼼꼼히 > 아주 많이",
+            "Considerably > 상당히 > 증가하락동사 강조",
+            "Significantly > 상당히 > 증가하락동사 강조",
+            "Substantially > 상당히 > 증가하락동사 강조",
+            "Greatly > 상당히 > 증가하락동사 강조",
+            "Rapidly > 빠르게 > 증가하락동사 강조",
+            "Quickly > 빠르게 > 증가하락동사 강조",
+            "Unexpectedly > 뜻밖에 > 증가하락동사 강조",
+            "Surprisingly > 놀랍게도 > 증가하락동사 강조",
+            "Slowly > 느리게 > 증가하락동사 강조",
+            "Steadily > 안정적으로 > 증가하락동사 강조",
+            "Gradually > 경쟁적으로 > 증가하락동사 강조",
+            "Sharply > 급격하게 > 증가하락동사 강조",
+            "Dramatically > 급격하게 > 증가하락동사 강조",
+            "Remarkably > 눈에 띄게 > 증가하락동사 강조",
+            "Noticeably > 눈에 띄게 > 증가하락동사 강조"
         ];
 
-        // 데이터 파싱
-        const quizData = rawDataList.map(function(line) {
-            const parts = line.split('>');
-            return {
-                word: parts[0] ? parts[0].trim() : "",
-                meaning: parts[1] ? parts[1].trim() : "",
-                sentence: parts[2] ? parts[2].trim() : ""
-            };
-        });
+        // 2부 데이터
+        const rawDataPart2 = [
+            "등위접속사 > and, but or yet so > 문두에 올 수 없고 문장중간에서만 연결 > and but or yet는 단어와 단어, 구와 구, 절과 절을 연결, so는 절과 절만 연결",
+            "종속절 접속사 > 명사절, 형용사절, 부사절 접속사 > 명사절은  that절 if/weather절, 의문사절. 형용사절은 관계대명사절, 관계부사절",
+            "부사절 접속사 > 종류 > 시간, 이유, 양보, 조건, 대조, 목적, 결과, 기타",
+            "시간 > when while until before after as soon as as since once by the time",
+            "이유 > because since as now that",
+            "양보 > though, although, even though, even if, despite the fact, in spite of the fact",
+            "조건 > if, unless, as long as, providing(that), provided(that), assuming(that), assumed(that), in case(that), in the event(that), once, only if",
+            "대조 > while, whereas"
+        ];
+
+        const quizDataPart1 = parseData(rawDataPart1);
+        const quizDataPart2 = parseData(rawDataPart2);
 
         // 상태 변수
-        let currentMode = 'sequential';
+        let activeQuizData = [];
         let questionOrder = [];
+        let incorrectQuestions = []; // 오답 저장 배열
         let currentIndex = 0;
         let step = 0; 
+        let currentModeLabel = "";
 
         // DOM 요소
         const startScreen = document.getElementById('start-screen');
         const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
         const displayWord = document.getElementById('display-word');
         const displayMeaning = document.getElementById('display-meaning');
         const displaySentence = document.getElementById('display-sentence');
+        
         const mainActionBtn = document.getElementById('main-action-btn');
+        const oxControls = document.getElementById('ox-controls');
         const progressDisplay = document.getElementById('progress-display');
 
         // 퀴즈 시작 함수
-        function startQuiz(mode) {
-            currentMode = mode;
-            currentIndex = 0;
+        function startQuiz(part, mode) {
+            incorrectQuestions = []; // 시작할 때 오답 배열 초기화
             
-            // 인덱스 배열 생성
-            questionOrder = [];
-            for (let i = 0; i < quizData.length; i++) {
-                questionOrder.push(i);
+            if (part === 'part1') {
+                activeQuizData = [...quizDataPart1];
+                currentModeLabel = "1부";
+            } else if (part === 'part2') {
+                activeQuizData = [...quizDataPart2];
+                currentModeLabel = "2부";
             }
+
+            currentIndex = 0;
+            questionOrder = Array.from({length: activeQuizData.length}, (_, i) => i);
             
-            // 랜덤 모드일 경우 배열 섞기
             if (mode === 'random') {
                 for (let i = questionOrder.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
-                    const temp = questionOrder[i];
-                    questionOrder[i] = questionOrder[j];
-                    questionOrder[j] = temp;
+                    [questionOrder[i], questionOrder[j]] = [questionOrder[j], questionOrder[i]];
                 }
             }
 
             startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            renderQuestion();
+        }
+
+        // 오답 퀴즈 시작 함수
+        function startReviewQuiz() {
+            activeQuizData = [...incorrectQuestions]; // 오답 데이터로 교체
+            incorrectQuestions = []; // 다시 오답을 담기 위해 비움
+            currentModeLabel = "오답노트";
+            
+            currentIndex = 0;
+            questionOrder = Array.from({length: activeQuizData.length}, (_, i) => i);
+            
+            resultScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
             
             renderQuestion();
@@ -295,41 +393,79 @@
         // 문제 화면 그리기
         function renderQuestion() {
             if (currentIndex >= questionOrder.length) {
-                alert("준비된 모든 " + questionOrder.length + "문제를 풀었습니다! 수고하셨습니다.");
-                goToHome();
+                showResultScreen();
                 return;
             }
 
-            step = 0; // 초기 상태로 리셋
-            const currentData = quizData[questionOrder[currentIndex]];
+            step = 0;
+            const currentData = activeQuizData[questionOrder[currentIndex]];
 
-            // 텍스트 세팅
             displayWord.textContent = currentData.word;
             displayMeaning.textContent = currentData.meaning;
             displaySentence.textContent = currentData.sentence;
 
-            // 진행률 표시
-            progressDisplay.textContent = (currentIndex + 1) + " / " + questionOrder.length;
+            progressDisplay.textContent = "[" + currentModeLabel + "] " + (currentIndex + 1) + " / " + questionOrder.length;
 
-            // UI 가시성 초기화 (영어만 보임)
             displayMeaning.classList.add('hidden');
             displaySentence.classList.add('hidden');
-            mainActionBtn.textContent = "정답 확인 (뜻)";
+            
+            mainActionBtn.classList.remove('hidden');
+            oxControls.classList.add('hidden');
+            mainActionBtn.textContent = "정답 확인 (뜻/내용)";
         }
 
         // 메인 버튼 동작
         function handleMainAction() {
+            const currentData = activeQuizData[questionOrder[currentIndex]];
+            const hasSentence = currentData.sentence !== ""; 
+
             if (step === 0) {
                 displayMeaning.classList.remove('hidden');
-                mainActionBtn.textContent = "정답 확인 (문법포인트)";
-                step = 1;
+                
+                if (hasSentence) {
+                    mainActionBtn.textContent = "정답 확인 (세부내용)";
+                    step = 1;
+                } else {
+                    showOXButtons(); // 3번째 내용 없으면 바로 O/X 버튼 표시
+                    step = 2; 
+                }
             } else if (step === 1) {
                 displaySentence.classList.remove('hidden');
-                mainActionBtn.textContent = "다음 문제";
+                showOXButtons(); // 모든 내용 공개 후 O/X 버튼 표시
                 step = 2;
-            } else if (step === 2) {
-                currentIndex++;
-                renderQuestion();
+            }
+        }
+
+        // O/X 버튼 활성화
+        function showOXButtons() {
+            mainActionBtn.classList.add('hidden');
+            oxControls.classList.remove('hidden');
+        }
+
+        // O/X 선택 처리
+        function submitAnswer(isCorrect) {
+            if (!isCorrect) {
+                // 틀렸으면 오답 배열에 현재 데이터 추가
+                incorrectQuestions.push(activeQuizData[questionOrder[currentIndex]]);
+            }
+            
+            currentIndex++;
+            renderQuestion();
+        }
+
+        // 결과 화면 표시
+        function showResultScreen() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            document.getElementById('total-count').textContent = questionOrder.length;
+            document.getElementById('incorrect-count').textContent = incorrectQuestions.length;
+
+            const btnReview = document.getElementById('btn-review-incorrect');
+            if (incorrectQuestions.length > 0) {
+                btnReview.classList.remove('hidden');
+            } else {
+                btnReview.classList.add('hidden');
             }
         }
 
@@ -338,12 +474,16 @@
             step = 0;
             displayMeaning.classList.add('hidden');
             displaySentence.classList.add('hidden');
-            mainActionBtn.textContent = "정답 확인 (뜻)";
+            
+            mainActionBtn.classList.remove('hidden');
+            oxControls.classList.add('hidden');
+            mainActionBtn.textContent = "정답 확인 (뜻/내용)";
         }
 
         // 처음 화면으로 돌아가기
         function goToHome() {
             quizScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
             startScreen.classList.remove('hidden');
         }
     </script>
